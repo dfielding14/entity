@@ -280,7 +280,7 @@ namespace ntt {
       raise::ErrorIf(extent.size() > 1,
                      "invalid `grid.extent` for non-cartesian geometry",
                      HERE);
-      extent.push_back({ ZERO, constant::PI });
+      extent.push_back({ -constant::HALF_PI, constant::HALF_PI });
       if (dim == Dim::_3D) {
         extent.push_back({ ZERO, TWO * constant::PI });
       }

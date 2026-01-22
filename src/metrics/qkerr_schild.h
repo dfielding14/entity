@@ -46,11 +46,11 @@ namespace metric {
     }
 
     Inline auto Sigma(real_t r, real_t theta) const -> real_t {
-      return SQR(r) + SQR(a) * SQR(math::cos(theta));
+      return SQR(r) + SQR(a) * SQR(math::sin(theta));
     }
 
     Inline auto A(real_t r, real_t theta) const -> real_t {
-      return SQR(SQR(r) + SQR(a)) - SQR(a) * Delta(r) * SQR(math::sin(theta));
+      return SQR(SQR(r) + SQR(a)) - SQR(a) * Delta(r) * SQR(math::cos(theta));
     }
 
     Inline auto z(real_t r, real_t theta) const -> real_t {
@@ -166,11 +166,11 @@ namespace metric {
         const real_t theta { eta2theta(x[1] * deta + eta_min) };
         if constexpr (D == Dim::_2D) {
           return A(r0 + math::exp(x[0] * dchi + chi_min), theta) *
-                 SQR(math::sin(theta)) /
+                 SQR(math::cos(theta)) /
                  Sigma(r0 + math::exp(x[0] * dchi + chi_min), theta);
         } else {
           return SQR(dphi) * A(r0 + math::exp(x[0] * dchi + chi_min), theta) *
-                 SQR(math::sin(theta)) /
+                 SQR(math::cos(theta)) /
                  Sigma(r0 + math::exp(x[0] * dchi + chi_min), theta);
         }
       } else if constexpr ((i == 1 && j == 3) || (i == 3 && j == 1)) {
@@ -179,11 +179,11 @@ namespace metric {
         if constexpr (D == Dim::_2D) {
           return -dchi * math::exp(x[0] * dchi + chi_min) * a *
                  (ONE + z(r0 + math::exp(x[0] * dchi + chi_min), theta)) *
-                 SQR(math::sin(theta));
+                 SQR(math::cos(theta));
         } else {
           return -dchi * math::exp(x[0] * dchi + chi_min) * dphi * a *
                  (ONE + z(r0 + math::exp(x[0] * dchi + chi_min), theta)) *
-                 SQR(math::sin(theta));
+                 SQR(math::cos(theta));
         }
       } else {
         return ZERO;
@@ -215,11 +215,11 @@ namespace metric {
         const real_t theta { eta2theta(x[1] * deta + eta_min) };
         if constexpr (D == Dim::_2D) {
           return ONE / (Sigma(r0 + math::exp(x[0] * dchi + chi_min), theta) *
-                        SQR(math::sin(theta)));
+                        SQR(math::cos(theta)));
         } else {
           return SQR(dphi_inv) /
                  (Sigma(r0 + math::exp(x[0] * dchi + chi_min), theta) *
-                  SQR(math::sin(theta)));
+                  SQR(math::cos(theta)));
         }
       } else if constexpr ((i == 1 && j == 3) || (i == 3 && j == 1)) {
         const real_t theta { eta2theta(x[1] * deta + eta_min) };
@@ -475,11 +475,11 @@ namespace metric {
       const real_t theta { eta2theta(x[1] * deta + eta_min) };
       if constexpr (D == Dim::_2D) {
         return dchi * expchi * dtheta_deta(x[1] * deta + eta_min) * deta *
-               Sigma(r0 + expchi, theta) * math::sin(theta) *
+               Sigma(r0 + expchi, theta) * math::cos(theta) *
                math::sqrt(ONE + z(r0 + expchi, theta));
       } else {
         return dchi * expchi * dtheta_deta(x[1] * deta + eta_min) * deta *
-               dphi * Sigma(r0 + expchi, theta) * math::sin(theta) *
+               dphi * Sigma(r0 + expchi, theta) * math::cos(theta) *
                math::sqrt(ONE + z(r0 + expchi, theta));
       }
     }
